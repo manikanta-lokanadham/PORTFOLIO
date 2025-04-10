@@ -20,34 +20,38 @@ export default function Home() {
     };
     
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      
-      // Add new point to trail with random scale
-      setTrail(prevTrail => {
-        const newPoint = { 
-          x: e.clientX, 
-          y: e.clientY, 
-          opacity: 1,
-          scale: Math.random() * 0.5 + 0.5 // Random scale between 0.5 and 1
-        };
-        const updatedTrail = [newPoint, ...prevTrail.slice(0, 24)]; // Increased trail length
-        return updatedTrail;
+      // Use requestAnimationFrame to throttle updates
+      requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+        
+        // Add new point to trail with random scale
+        setTrail(prevTrail => {
+          const newPoint = { 
+            x: e.clientX, 
+            y: e.clientY, 
+            opacity: 1,
+            scale: Math.random() * 0.5 + 0.5 // Random scale between 0.5 and 1
+          };
+          // Reduce trail length from 24 to 10 points for better performance
+          const updatedTrail = [newPoint, ...prevTrail.slice(0, 10)];
+          return updatedTrail;
+        });
       });
     };
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
     
-    // Fade out trail points with smoother animation
+    // Fade out trail points with smoother animation, less frequent updates
     const fadeInterval = setInterval(() => {
       setTrail(prevTrail =>
         prevTrail.map(point => ({
           ...point,
-          opacity: point.opacity > 0 ? point.opacity - 0.02 : 0, // Slower fade
-          scale: point.scale * 0.98 // Gradually decrease scale
+          opacity: point.opacity > 0 ? point.opacity - 0.05 : 0, // Faster fade
+          scale: point.scale * 0.95 // Faster scale reduction
         }))
       );
-    }, 16); // 60fps for smooth animation
+    }, 50); // Reduce update frequency from 16ms to 50ms
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -202,7 +206,7 @@ export default function Home() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 5.0 }}
+          transition={{ duration: 1.0 }}
           className="bg-black/40 backdrop-blur-2xl border-b border-white/5"
         >
           <div className="container max-w-7xl mx-auto">
