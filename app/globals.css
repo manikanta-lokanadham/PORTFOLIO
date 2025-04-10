@@ -628,4 +628,18 @@
 /* Glass Effect */
 .glass-effect {
   @apply bg-background/50 backdrop-blur-sm border border-white/10;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  color: #ffffff; /* Ensure text is white for better contrast */
+}
+
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    color: #ffffff; /* Ensure text is white for better contrast on mobile */
+  }
 } 

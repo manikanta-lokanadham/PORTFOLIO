@@ -12,6 +12,7 @@ export default function Home() {
   const [cursorVariant, setCursorVariant] = useState("default");
   const [trail, setTrail] = useState<{ x: number; y: number; opacity: number; scale: number }[]>([]);
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -201,7 +202,7 @@ export default function Home() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 5.0 }}
           className="bg-black/40 backdrop-blur-2xl border-b border-white/5"
         >
           <div className="container max-w-7xl mx-auto">
@@ -287,6 +288,7 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                   className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-black/20 transition-colors backdrop-blur-lg"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                   <div className="flex flex-col items-center justify-center w-6 h-6">
                     <span className="w-5 h-0.5 bg-white mb-1 transform transition-transform origin-center" />
@@ -299,6 +301,12 @@ export default function Home() {
           </div>
         </motion.div>
       </nav>
+
+      {isMenuOpen && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10">
+          {/* Mobile menu content here */}
+        </div>
+      )}
 
       {/* Add black blur overlay */}
       <div className="fixed inset-0 bg-black/30 backdrop-blur-[100px] pointer-events-none z-0" />
@@ -451,7 +459,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-                className="relative w-full max-w-md mx-auto lg:ml-16"
+              className="relative w-full max-w-[300px] sm:max-w-[400px] mx-auto"
             >
               {/* Profile Image Container */}
               <div className="relative w-full aspect-square">
@@ -461,14 +469,14 @@ export default function Home() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                   className="absolute inset-0 rounded-full border-4 border-primary/20"
-                    style={{ transform: 'translateZ(0)' }}
+                  style={{ transform: 'translateZ(0)' }}
                 />
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
-                  className="absolute inset-8 rounded-full border-4 border-secondary/20"
-                    style={{ transform: 'translateZ(0)' }}
+                  className="absolute inset-4 sm:inset-8 rounded-full border-4 border-secondary/20"
+                  style={{ transform: 'translateZ(0)' }}
                 />
                 
                 {/* Rotating Gradient Ring */}
@@ -477,7 +485,7 @@ export default function Home() {
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary/30"
-                    style={{ transform: 'translateZ(0)' }}
+                  style={{ transform: 'translateZ(0)' }}
                 />
                 
                 {/* Gradient Overlay */}
@@ -488,19 +496,19 @@ export default function Home() {
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
-                    className="absolute inset-12 rounded-full overflow-hidden"
-                    style={{ transform: 'translateZ(0)' }}
+                  className="absolute inset-4 sm:inset-8 md:inset-12 rounded-full overflow-hidden"
+                  style={{ transform: 'translateZ(0)' }}
                 >
-                    <div className="relative w-full h-full">
-                  <Image
-                        src="/images/profile.jpg"
-                    alt="Profile"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 400px"
-                        priority
-                        className="object-cover scale-110"
-                      />
-                    </div>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/images/profile.jpg"
+                      alt="Profile"
+                      fill
+                      sizes="(max-width: 768px) 300px, 400px"
+                      priority
+                      className="object-cover scale-110"
+                    />
+                  </div>
                 </motion.div>
 
                 {/* Decorative Elements */}
@@ -508,7 +516,7 @@ export default function Home() {
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.7 }}
-                  className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-primary/20"
+                  className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
                 >
                   <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
@@ -520,7 +528,7 @@ export default function Home() {
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.8 }}
-                  className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full bg-primary/20"
+                  className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
                 >
                   <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
@@ -528,18 +536,6 @@ export default function Home() {
                     className="w-full h-full rounded-full bg-primary/20"
                   />
                 </motion.div>
-
-                {/* Floating Elements */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-8 -right-8 w-4 h-4 rounded-full bg-primary/30"
-                />
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute -bottom-8 -left-8 w-4 h-4 rounded-full bg-secondary/30"
-                />
               </div>
             </motion.div>
           </div>
@@ -680,6 +676,7 @@ export default function Home() {
                 onHoverEnd={() => setCursorVariant("default")}
                 className="group relative h-full transform-gpu"
                 style={{ perspective: "1000px" }}
+                onClick={() => window.open(project.demoLink, '_blank')}
               >
                 <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50 h-full">
                   <div className="relative aspect-[16/9] overflow-hidden">
@@ -1456,7 +1453,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto"
+            className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
           >
             {/* Contact Form */}
             <motion.div
@@ -1464,7 +1461,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="glass-effect rounded-2xl p-8"
+              className="glass-effect rounded-2xl p-8 w-full"
             >
               <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
               <form className="space-y-6" onSubmit={handleSubmit}>
@@ -1571,7 +1568,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="space-y-6"
+              className="space-y-6 w-full"
             >
               {/* Contact Info Card */}
               <motion.div
