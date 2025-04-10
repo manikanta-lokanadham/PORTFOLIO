@@ -207,10 +207,10 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.0 }}
-          className="bg-black/40 backdrop-blur-2xl border-b border-white/5"
+          className={`bg-black/40 backdrop-blur-2xl border-b border-white/5 ${isScrolled ? 'shadow-lg' : ''}`}
         >
           <div className="container max-w-7xl mx-auto">
-            <div className="flex items-center justify-between h-20 px-4 relative z-50">
+            <div className="flex items-center justify-between h-14 sm:h-16 px-4 relative z-50">
               {/* Logo */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -219,7 +219,7 @@ export default function Home() {
                 className="relative"
               >
                 <Link href="/" className="block">
-                  <span className="text-2xl font-bold relative">
+                  <span className="text-xl sm:text-2xl font-bold relative">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">MK.</span>
                     <motion.span
                       className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-red-500/20"
@@ -250,7 +250,7 @@ export default function Home() {
                   >
                     <Link
                       href={item.href}
-                      className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-200 group"
+                      className="relative px-3 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors duration-200 group"
                     >
                       {item.name}
                       <span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-white/0 via-white/50 to-white/0 scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
@@ -259,16 +259,17 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Contact Button & Mobile Menu */}
+              {/* Mobile Menu Button */}
               <div className="flex items-center gap-4">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
+                  className="hidden md:block"
                 >
                   <Link 
                     href="#contact"
-                    className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 rounded-lg transition-all duration-200 backdrop-blur-lg border border-white/10"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 rounded-lg transition-all duration-200 backdrop-blur-lg border border-white/10"
                   >
                     <span>Hire Me</span>
                     <motion.span
@@ -286,7 +287,6 @@ export default function Home() {
                   </Link>
                 </motion.div>
 
-                {/* Mobile Menu Button */}
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -295,22 +295,71 @@ export default function Home() {
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                   <div className="flex flex-col items-center justify-center w-6 h-6">
-                    <span className="w-5 h-0.5 bg-white mb-1 transform transition-transform origin-center" />
-                    <span className="w-4 h-0.5 bg-white mb-1" />
-                    <span className="w-5 h-0.5 bg-white transform transition-transform origin-center" />
+                    <span className={`w-5 h-0.5 bg-white mb-1 transform transition-transform duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+                    <span className={`w-4 h-0.5 bg-white mb-1 transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
+                    <span className={`w-5 h-0.5 bg-white transform transition-transform duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
                   </div>
                 </motion.button>
               </div>
             </div>
           </div>
         </motion.div>
-      </nav>
 
-      {isMenuOpen && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10">
-          {/* Mobile menu content here */}
-        </div>
-      )}
+        {/* Mobile Menu */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ 
+            opacity: isMenuOpen ? 1 : 0,
+            y: isMenuOpen ? 0 : -20,
+            display: isMenuOpen ? 'block' : 'none'
+          }}
+          transition={{ duration: 0.3 }}
+          className="md:hidden absolute top-16 left-0 right-0 bg-black/90 backdrop-blur-xl border-b border-white/5"
+        >
+          <div className="container max-w-7xl mx-auto py-4 px-4">
+            <div className="flex flex-col space-y-2">
+              {[
+                { name: 'Home', href: '#home' },
+                { name: 'Projects', href: '#projects' },
+                { name: 'Education', href: '#education' },
+                { name: 'Experience', href: '#experience' },
+                { name: 'Skills', href: '#skills' },
+                { name: 'Certifications', href: '#certifications' },
+                { name: 'Contact', href: '#contact' },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="block px-4 py-2 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.7 }}
+                className="pt-2"
+              >
+                <Link 
+                  href="#contact"
+                  className="block px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 rounded-lg transition-all duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Hire Me
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </nav>
 
       {/* Add black blur overlay */}
       <div className="fixed inset-0 bg-black/30 backdrop-blur-[100px] pointer-events-none z-0" />
@@ -334,110 +383,116 @@ export default function Home() {
       {/* Floating Particles with darker style */}
       <FloatingParticles />
 
-      <main className="flex-1 pt-10">
+      <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50" />
+        <section className="relative min-h-[85vh] flex items-center justify-center py-12 sm:py-16 overflow-hidden">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative z-10"
-            >
-              {/* Decorative Elements */}
-              <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-              <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-              
+            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
               {/* Content */}
-              <div className="relative space-y-8">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/40 via-pink-500/40 to-red-500/40 text-white/90 text-sm font-medium backdrop-blur-sm w-fit"
-                >
-                  <motion.span
-                    animate={{
-                      opacity: [1, 0.5, 1],
-                      scale: [1, 1.2, 1]
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"
-                  />
-                  Welcome to my portfolio
-                </motion.div>
-
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
-                >
-                  Hi, I'm{' '}
-                  <span className="text-gradient relative">
-                    Manikanta
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 text-center lg:text-left mt-8 sm:mt-0"
+              >
+                {/* Decorative Elements */}
+                <div className="absolute -top-16 -left-16 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+                
+                {/* Content */}
+                <div className="relative space-y-4 sm:space-y-6">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/40 via-pink-500/40 to-red-500/40 text-white/90 text-xs sm:text-sm font-medium backdrop-blur-sm mx-auto lg:mx-0"
+                  >
                     <motion.span
-                      initial={{ width: 0 }}
-                      animate={{ width: "100%" }}
-                      transition={{ duration: 0.5, delay: 0.5 }}
-                      className="absolute bottom-0 left-0 h-1 bg-primary/20"
+                      animate={{
+                        opacity: [1, 0.5, 1],
+                        scale: [1, 1.2, 1]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"
                     />
-                  </span>
-                </motion.h1>
+                    Welcome to my portfolio
+                  </motion.div>
 
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="text-xl sm:text-2xl lg:text-3xl text-muted-foreground"
-                >
-                  UI/UX Designer & Developer
-                </motion.h2>
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                  >
+                    Hi, I'm{' '}
+                    <span className="text-gradient relative inline-block">
+                      Manikanta
+                      <motion.span
+                        initial={{ width: 0 }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="absolute bottom-0 left-0 h-1 bg-primary/20"
+                      />
+                    </span>
+                  </motion.h1>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl"
-                >
-                  Creating engaging digital experiences with expertise in UI/UX design, web development, and cybersecurity. 
-                  Proficient in Figma, Adobe XD, Photoshop, and modern web technologies.
-                </motion.p>
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground"
+                  >
+                    UI/UX Designer & Developer
+                  </motion.h2>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  className="flex flex-wrap gap-4"
-                >
-                  <Link href="#contact" className="px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 text-white rounded-lg transition-all duration-200 flex items-center gap-2 group">
-                    Contact Me
-                    <motion.span
-                      initial={{ x: 0 }}
-                      animate={{ x: 5 }}
-                      transition={{ duration: 0.2, repeat: Infinity, repeatType: "reverse" }}
-                      className="inline-block"
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0"
+                  >
+                    Creating engaging digital experiences with expertise in UI/UX design, web development, and cybersecurity. 
+                    Proficient in Figma, Adobe XD, Photoshop, and modern web technologies.
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="flex flex-wrap gap-4 justify-center lg:justify-start"
+                  >
+                    <Link 
+                      href="#contact" 
+                      className="px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm sm:text-base"
                     >
-                      →
-                    </motion.span>
-                  </Link>
-                  <Link href="#projects" className="px-6 py-3 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 hover:from-purple-500/20 hover:via-pink-500/20 hover:to-red-500/20 text-white rounded-lg transition-all duration-200 border border-white/10 flex items-center gap-2">
-                    View Projects
-                  </Link>
-                </motion.div>
+                      Contact Me
+                      <motion.span
+                        initial={{ x: 0 }}
+                        animate={{ x: 5 }}
+                        transition={{ duration: 0.2, repeat: Infinity, repeatType: "reverse" }}
+                        className="inline-block"
+                      >
+                        →
+                      </motion.span>
+                    </Link>
+                    <Link 
+                      href="#projects" 
+                      className="px-6 py-3 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 hover:from-purple-500/20 hover:via-pink-500/20 hover:to-red-500/20 text-white rounded-lg transition-all duration-200 border border-white/10 flex items-center gap-2 text-sm sm:text-base"
+                    >
+                      View Projects
+                    </Link>
+                  </motion.div>
 
                   {/* Social Links */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.7 }}
-                    className="flex items-center gap-4 pt-4"
+                    className="flex items-center gap-4 pt-4 justify-center lg:justify-start"
                   >
                     {[
                       { icon: "💼", href: "https://www.linkedin.com/in/Manikanta-Lokanadhamm/" },
@@ -455,501 +510,501 @@ export default function Home() {
                         <span className="text-lg">{social.icon}</span>
                       </motion.a>
                     ))}
-                </motion.div>
-              </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Profile Image */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="relative w-full max-w-[220px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[360px] mx-auto order-first lg:order-last"
+              >
+                <div className="relative w-full aspect-square">
+                  {/* Animated Background Rings */}
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="absolute inset-0 rounded-full border-4 border-primary/20"
+                    style={{ transform: 'translateZ(0)' }}
+                  />
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    className="absolute inset-4 sm:inset-8 rounded-full border-4 border-secondary/20"
+                    style={{ transform: 'translateZ(0)' }}
+                  />
+                  
+                  {/* Rotating Gradient Ring */}
+                  <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary/30"
+                    style={{ transform: 'translateZ(0)' }}
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
+                  
+                  {/* Profile Image */}
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="absolute inset-4 sm:inset-8 rounded-full overflow-hidden"
+                    style={{ transform: 'translateZ(0)' }}
+                  >
+                    <div className="relative w-full h-full">
+                      <Image
+                        src="/images/profile.jpg"
+                        alt="Profile"
+                        fill
+                        sizes="(max-width: 768px) 250px, (max-width: 1024px) 300px, 400px"
+                        priority
+                        className="object-cover scale-110"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Decorative Elements */}
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                    className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="w-full h-full rounded-full bg-primary/20"
+                    />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                      className="w-full h-full rounded-full bg-primary/20"
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects" className="section py-16 sm:py-24 relative overflow-hidden">
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Featured Projects</h2>
+              <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-base sm:text-lg">
+                Explore my portfolio of innovative projects showcasing expertise in UI/UX Design, Development and Graphic Design
+              </p>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="relative w-full max-w-[300px] sm:max-w-[400px] mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
             >
-              {/* Profile Image Container */}
-              <div className="relative w-full aspect-square">
-                {/* Animated Background Rings */}
+              {/* Project cards with enhanced design */}
+              {[
+                {
+                  title: 'Grandmas Kitchen Book Cover Design Using Photoshop',
+                  description: 'A warm and homely eBook cover design for Grandmas Kitchen, featuring rustic textures, vintage fonts, and comforting food visuals that evoke nostalgic family memories.',
+                  category: 'Graphic Design',
+                  tech: 'Photoshop',
+                  year: '2024',
+                  type: 'Graphic Design',
+                  image: '/portfolio/Projects/project1.jpg',
+                  demoLink: 'https://www.behance.net/gallery/206340827/Grandmas-Kitchen-Book-Cover-Design-Using-Photoshop'
+                },
+                {
+                  title: 'Zomato Social Media Poster Design Using Photoshop',
+                  description: 'A bold and appetizing Zomato social media poster design created using Photoshop,',
+                  category: 'Web Design',
+                  tech: 'Photoshop',
+                  year: '2024',
+                  type: 'Social Media Poster Design',
+                  image: '/portfolio/Projects/project2.jpg',
+                  demoLink: 'https://www.behance.net/gallery/206343605/Zomato-Social-Media-Poster-Design-Using-Photoshop'
+                },
+                {
+                  title: 'PAY WALLET - A DIGITAL PAYMENTS PLATFORM (CASE STUDY)',
+                  description: 'An in-depth case study showcasing the user-centric design, seamless UI/UX flow, and secure transaction features of Pay Wallet, a modern digital payments platform crafted to enhance everyday financial convenience..',
+                  category: 'Web Development',
+                  tech: 'Figma',
+                  year: '2024',
+                  type: 'UI/UX Design',
+                  image: '/portfolio/Projects/project3.jpg',
+                  demoLink: 'https://www.behance.net/gallery/194718677/PAY-WALLET-A-DIGITAL-PAYMENTS-PLATFORM-(CASE-STUDY)'
+                },
+                {
+                  title: 'Tri-Fold Broucher Design Using Photoshop',
+                  description: 'A professionally crafted tri-fold brochure design using Photoshop, featuring clean layouts, high-quality visuals, and organized sections to effectively communicate brand identity and services.',
+                  category: 'Graphic Design',
+                  tech: 'Photoshop',
+                  year: '2024',
+                  type: 'Graphic Design',
+                  image: '/portfolio/Projects/project4.jpg',
+                  demoLink: 'https://www.behance.net/gallery/206345423/Tri-Fold-Broucher-Design-Using-Photoshop'
+                },
+                {
+                  title: 'Subscription Management Dashboard Design',
+                  description: 'A sleek and intuitive Subscription Management Dashboard design, showcasing real-time analytics, user-friendly navigation, and organized billing details—crafted to streamline user experience and simplify plan management.',
+                  category: 'UI/UX Design',
+                  tech: 'Figma',
+                  year: '2024',
+                  type: 'Dashboard Design',
+                  image: '/portfolio/Projects/project5.png',
+                  demoLink: 'https://www.behance.net/gallery/198328763/Subscription-Management-Dashboard-Design'
+                },
+                {
+                  title: 'Web Banner Poster Design Using Photoshop',
+                  description: 'A visually striking web banner poster design using Photoshop, featuring eye-catching graphics, bold typography, and a clear call-to-action to maximize online visibility and engagement.',
+                  category: 'Web Design',
+                  tech: 'Photoshop',
+                  year: '2024',
+                  type: 'Web Banner Design',
+                  image: '/portfolio/Projects/project6.jpg',
+                  demoLink: 'https://www.behance.net/gallery/206346845/Web-Banner-Poster-Design-Using-Photoshop'
+                },
+                {
+                  title: 'DELICIOUS - CODING SAMURAI INTERNSHIP TASK',
+                  description: 'A creative and functional web-based food ordering interface designed during the Coding Samurai internship, showcasing responsive UI/UX elements, interactive menus, and smooth user navigation for an enhanced digital dining experience.',
+                  category: 'UI/UX Design',
+                  tech: 'Figma',
+                  year: '2024',
+                  type: 'Web Design',
+                  image: '/portfolio/Projects/project7.png',
+                  demoLink: 'https://www.behance.net/gallery/194902239/DELICIOUS-CODING-SAMURAI-INTERNSHIP-TASK'
+                },
+                {
+                  title: 'Cloud Storage Web Design',
+                  description: 'A modern and minimalistic Cloud Storage Web Design featuring intuitive navigation, secure file management UI, and responsive layouts—crafted to offer a seamless and user-friendly cloud experience.',
+                  category: 'Web Design',
+                  tech: 'Figma',
+                  year: '2024',
+                  type: 'Web Design',
+                  image: '/portfolio/Projects/project8.jpg',
+                  demoLink: 'https://www.behance.net/gallery/186438603/Cloud-Storage-Web-Design'
+                },
+                {
+                  title: 'Super Delicious Food All Time (Poster Design)',
+                  description: 'A vibrant and mouth-watering poster design titled Super Delicious Food All Time, created to tempt taste buds with bold colors, irresistible food imagery, and playful typography that captures the joy of eating anytime.',
+                  category: 'Graphic Design',
+                  tech: 'Photoshop',
+                  year: '2024',
+                  type: 'Poster Design',
+                  image: '/portfolio/Projects/project9.jpeg',
+                  demoLink: 'https://www.behance.net/gallery/186955693/Super-Delicious-Food-All-Time-(Poster-Design)'
+                },
+                {
+                  title: 'Delicious Food Delivery App Desgin 2023',
+                  description: 'A sleek and modern Delicious Food Delivery App Design 2023, featuring an intuitive user interface, vibrant food visuals, smooth navigation, and real-time order tracking for an effortless and enjoyable food ordering experience.',
+                  category: 'UI/UX Design',
+                  tech: 'Figma',
+                  year: '2023',
+                  type: 'Web Design',
+                  image: '/portfolio/Projects/project10.jpg',
+                  demoLink: 'https://www.behance.net/gallery/186060199/Delicious-Food-Delivery-App-Desgin-2023'
+                }
+              ].map((project, index) => (
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="absolute inset-0 rounded-full border-4 border-primary/20"
-                  style={{ transform: 'translateZ(0)' }}
-                />
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="absolute inset-4 sm:inset-8 rounded-full border-4 border-secondary/20"
-                  style={{ transform: 'translateZ(0)' }}
-                />
-                
-                {/* Rotating Gradient Ring */}
-                <motion.div
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary/30"
-                  style={{ transform: 'translateZ(0)' }}
-                />
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 via-primary/10 to-transparent" />
-                
-                {/* Profile Image */}
-                <motion.div 
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  className="absolute inset-4 sm:inset-8 md:inset-12 rounded-full overflow-hidden"
-                  style={{ transform: 'translateZ(0)' }}
+                  key={index}
+                  whileHover={{ scale: 1.02, rotateY: 5 }}
+                  whileTap={{ scale: 0.98 }}
+                  onHoverStart={() => setCursorVariant("hover")}
+                  onHoverEnd={() => setCursorVariant("default")}
+                  className="group relative h-full transform-gpu"
+                  style={{ perspective: "1000px" }}
+                  onClick={() => window.open(project.demoLink, '_blank')}
                 >
-                  <div className="relative w-full h-full">
-                    <Image
-                      src="/images/profile.jpg"
-                      alt="Profile"
-                      fill
-                      sizes="(max-width: 768px) 300px, 400px"
-                      priority
-                      className="object-cover scale-110"
-                    />
+                  <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50 h-full">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        width={800}
+                        height={450}
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <div className="p-8 flex flex-col h-[calc(100%-18rem)]">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          {project.category}
+                        </span>
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
+                          {project.tech}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-muted-foreground mb-6 flex-grow text-base">
+                        {project.description}
+                      </p>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center gap-4">
+                          <span>{project.year}</span>
+                          <span>•</span>
+                          <span>{project.type}</span>
+                        </div>
+                        <Link 
+                          href={project.demoLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                        >
+                          View Project
+                          <motion.span
+                            initial={{ x: 0 }}
+                            animate={{ x: 5 }}
+                            transition={{ duration: 0.2, repeat: Infinity, repeatType: "reverse" }}
+                            className="inline-block"
+                          >
+                            →
+                          </motion.span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
-
-                {/* Decorative Elements */}
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-full h-full rounded-full bg-primary/20"
-                  />
-                </motion.div>
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-primary/20"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    className="w-full h-full rounded-full bg-primary/20"
-                  />
-                </motion.div>
-              </div>
+              ))}
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="section py-16 sm:py-24 relative overflow-hidden">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Featured Projects</h2>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-base sm:text-lg">
-              Explore my portfolio of innovative projects showcasing expertise in UI/UX Design, Development and Graphic Design
-            </p>
-          </motion.div>
+        {/* Education Section */}
+        <section id="education" className="section py-16 sm:py-24 relative overflow-hidden">
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Education Journey</h2>
+              <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+                My academic background and qualifications that have shaped my professional path
+              </p>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
-          >
-            {/* Project cards with enhanced design */}
-            {[
-              {
-                title: 'Grandmas Kitchen Book Cover Design Using Photoshop',
-                description: 'A warm and homely eBook cover design for Grandmas Kitchen, featuring rustic textures, vintage fonts, and comforting food visuals that evoke nostalgic family memories.',
-                category: 'Graphic Design',
-                tech: 'Photoshop',
-                year: '2024',
-                type: 'Graphic Design',
-                image: '/portfolio/Projects/project1.jpg',
-                demoLink: 'https://www.behance.net/gallery/206340827/Grandmas-Kitchen-Book-Cover-Design-Using-Photoshop'
-              },
-              {
-                title: 'Zomato Social Media Poster Design Using Photoshop',
-                description: 'A bold and appetizing Zomato social media poster design created using Photoshop,',
-                category: 'Web Design',
-                tech: 'Photoshop',
-                year: '2024',
-                type: 'Social Media Poster Design',
-                image: '/portfolio/Projects/project2.jpg',
-                demoLink: 'https://www.behance.net/gallery/206343605/Zomato-Social-Media-Poster-Design-Using-Photoshop'
-              },
-              {
-                title: 'PAY WALLET - A DIGITAL PAYMENTS PLATFORM (CASE STUDY)',
-                description: 'An in-depth case study showcasing the user-centric design, seamless UI/UX flow, and secure transaction features of Pay Wallet, a modern digital payments platform crafted to enhance everyday financial convenience..',
-                category: 'Web Development',
-                tech: 'Figma',
-                year: '2024',
-                type: 'UI/UX Design',
-                image: '/portfolio/Projects/project3.jpg',
-                demoLink: 'https://www.behance.net/gallery/194718677/PAY-WALLET-A-DIGITAL-PAYMENTS-PLATFORM-(CASE-STUDY)'
-              },
-              {
-                title: 'Tri-Fold Broucher Design Using Photoshop',
-                description: 'A professionally crafted tri-fold brochure design using Photoshop, featuring clean layouts, high-quality visuals, and organized sections to effectively communicate brand identity and services.',
-                category: 'Graphic Design',
-                tech: 'Photoshop',
-                year: '2024',
-                type: 'Graphic Design',
-                image: '/portfolio/Projects/project4.jpg',
-                demoLink: 'https://www.behance.net/gallery/206345423/Tri-Fold-Broucher-Design-Using-Photoshop'
-              },
-              {
-                title: 'Subscription Management Dashboard Design',
-                description: 'A sleek and intuitive Subscription Management Dashboard design, showcasing real-time analytics, user-friendly navigation, and organized billing details—crafted to streamline user experience and simplify plan management.',
-                category: 'UI/UX Design',
-                tech: 'Figma',
-                year: '2024',
-                type: 'Dashboard Design',
-                image: '/portfolio/Projects/project5.png',
-                demoLink: 'https://www.behance.net/gallery/198328763/Subscription-Management-Dashboard-Design'
-              },
-              {
-                title: 'Web Banner Poster Design Using Photoshop',
-                description: 'A visually striking web banner poster design using Photoshop, featuring eye-catching graphics, bold typography, and a clear call-to-action to maximize online visibility and engagement.',
-                category: 'Web Design',
-                tech: 'Photoshop',
-                year: '2024',
-                type: 'Web Banner Design',
-                image: '/portfolio/Projects/project6.jpg',
-                demoLink: 'https://www.behance.net/gallery/206346845/Web-Banner-Poster-Design-Using-Photoshop'
-              },
-              {
-                title: 'DELICIOUS - CODING SAMURAI INTERNSHIP TASK',
-                description: 'A creative and functional web-based food ordering interface designed during the Coding Samurai internship, showcasing responsive UI/UX elements, interactive menus, and smooth user navigation for an enhanced digital dining experience.',
-                category: 'UI/UX Design',
-                tech: 'Figma',
-                year: '2024',
-                type: 'Web Design',
-                image: '/portfolio/Projects/project7.png',
-                demoLink: 'https://www.behance.net/gallery/194902239/DELICIOUS-CODING-SAMURAI-INTERNSHIP-TASK'
-              },
-              {
-                title: 'Cloud Storage Web Design',
-                description: 'A modern and minimalistic Cloud Storage Web Design featuring intuitive navigation, secure file management UI, and responsive layouts—crafted to offer a seamless and user-friendly cloud experience.',
-                category: 'Web Design',
-                tech: 'Figma',
-                year: '2024',
-                type: 'Web Design',
-                image: '/portfolio/Projects/project8.jpg',
-                demoLink: 'https://www.behance.net/gallery/186438603/Cloud-Storage-Web-Design'
-              },
-              {
-                title: 'Super Delicious Food All Time (Poster Design)',
-                description: 'A vibrant and mouth-watering poster design titled Super Delicious Food All Time, created to tempt taste buds with bold colors, irresistible food imagery, and playful typography that captures the joy of eating anytime.',
-                category: 'Graphic Design',
-                tech: 'Photoshop',
-                year: '2024',
-                type: 'Poster Design',
-                image: '/portfolio/Projects/project9.jpeg',
-                demoLink: 'https://www.behance.net/gallery/186955693/Super-Delicious-Food-All-Time-(Poster-Design)'
-              },
-              {
-                title: 'Delicious Food Delivery App Desgin 2023',
-                description: 'A sleek and modern Delicious Food Delivery App Design 2023, featuring an intuitive user interface, vibrant food visuals, smooth navigation, and real-time order tracking for an effortless and enjoyable food ordering experience.',
-                category: 'UI/UX Design',
-                tech: 'Figma',
-                year: '2023',
-                type: 'Web Design',
-                image: '/portfolio/Projects/project10.jpg',
-                demoLink: 'https://www.behance.net/gallery/186060199/Delicious-Food-Delivery-App-Desgin-2023'
-              }
-            ].map((project, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="space-y-8 max-w-4xl mx-auto"
+            >
+              {/* B.Tech */}
               <motion.div
-                key={index}
-                whileHover={{ scale: 1.02, rotateY: 5 }}
-                whileTap={{ scale: 0.98 }}
-                onHoverStart={() => setCursorVariant("hover")}
-                onHoverEnd={() => setCursorVariant("default")}
-                className="group relative h-full transform-gpu"
-                style={{ perspective: "1000px" }}
-                onClick={() => window.open(project.demoLink, '_blank')}
+                whileHover={{ scale: 1.02 }}
+                className="relative group"
               >
-                <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 border border-border/50 h-full">
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={800}
-                      height={450}
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                  <div className="p-8 flex flex-col h-[calc(100%-18rem)]">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                        {project.category}
-                      </span>
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
-                        {project.tech}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-6 flex-grow text-base">
-                      {project.description}
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center gap-4">
-                        <span>{project.year}</span>
-                        <span>•</span>
-                        <span>{project.type}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <span className="text-3xl">🎓</span>
                       </div>
-                      <Link 
-                        href={project.demoLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-                      >
-                        View Project
-                        <motion.span
-                          initial={{ x: 0 }}
-                          animate={{ x: 5 }}
-                          transition={{ duration: 0.2, repeat: Infinity, repeatType: "reverse" }}
-                          className="inline-block"
-                        >
-                          →
-                        </motion.span>
-                      </Link>
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                        <div>
+                          <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            Bachelor of Technology
+                          </h3>
+                          <p className="text-lg font-semibold mt-1">Godavari Institute of Engineering & Technology</p>
+                          <p className="text-muted-foreground">Computer Science & Engineering</p>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">2021 - 2025</span>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <p className="text-muted-foreground">
+                          • Specializing in Computer Science with a focus on software development, UI/UX design, and web technologies
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Core team member of the college's technical club, organizing workshops and hackathons
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Completed projects in web development, machine learning, and mobile app development
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Participated in various coding competitions and technical events
+                        </p>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {['Web Development', 'UI/UX Design', 'Data Structures', 'Algorithms', 'Database Management'].map((skill) => (
+                          <span key={skill} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Education Section */}
-      <section id="education" className="section py-16 sm:py-24 relative overflow-hidden">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Education Journey</h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              My academic background and qualifications that have shaped my professional path
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-8 max-w-4xl mx-auto"
-          >
-            {/* B.Tech */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
-                      <span className="text-3xl">🎓</span>
+              {/* Intermediate */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center">
+                        <span className="text-3xl">🏫</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                <div>
-                        <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                          Bachelor of Technology
-                        </h3>
-                        <p className="text-lg font-semibold mt-1">Godavari Institute of Engineering & Technology</p>
-                        <p className="text-muted-foreground">Computer Science & Engineering</p>
-                </div>
-                      <div className="flex items-center">
-                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">2021 - 2025</span>
-              </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-muted-foreground">
-                        • Specializing in Computer Science with a focus on software development, UI/UX design, and web technologies
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Core team member of the college's technical club, organizing workshops and hackathons
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Completed projects in web development, machine learning, and mobile app development
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Participated in various coding competitions and technical events
-                      </p>
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {['Web Development', 'UI/UX Design', 'Data Structures', 'Algorithms', 'Database Management'].map((skill) => (
-                        <span key={skill} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
-                          {skill}
-                        </span>
-                      ))}
+                    <div className="flex-grow">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                        <div>
+                          <h3 className="text-xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+                            Intermediate Education
+                          </h3>
+                          <p className="text-lg font-semibold mt-1">Sri Chaitanya College of Education</p>
+                          <p className="text-muted-foreground">Mathematics, Physics, Chemistry (MPC)</p>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/10">
+                            2019 - 2021
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <p className="text-muted-foreground">
+                          • Achieved academic excellence with a strong foundation in mathematics and sciences
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Participated in various mathematics and science olympiads
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Active member of the science club and participated in science exhibitions
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Received merit scholarship for outstanding academic performance
+                        </p>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {['Mathematics', 'Physics', 'Chemistry', 'Problem Solving', 'Analytical Skills'].map((subject) => (
+                          <span key={subject} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
+                            {subject}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
+
+              {/* School */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                        <span className="text-3xl">📚</span>
+                      </div>
+                    </div>
+                    <div className="flex-grow">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                        <div>
+                          <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            Secondary Education
+                          </h3>
+                          <p className="text-lg font-semibold mt-1">Sai Vineeth Public School</p>
+                          <p className="text-muted-foreground">SSC (10th Standard)</p>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/10">
+                            2018 - 2019
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <p className="text-muted-foreground">
+                          • Graduated with distinction and received academic excellence award
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Class representative and active participant in school activities
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Won first prize in school-level science exhibition
+                        </p>
+                        <p className="text-muted-foreground">
+                          • Member of the school's quiz team and debate club
+                        </p>
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {['Sciences', 'Mathematics', 'English', 'Social Studies', 'Leadership'].map((subject) => (
+                          <span key={subject} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
+                            {subject}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
+          </div>
+        </section>
 
-            {/* Intermediate */}
+        {/* Experience Section */}
+        <section id="experience" className="section py-16 sm:py-24 relative overflow-hidden">
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center">
-                      <span className="text-3xl">🏫</span>
-                    </div>
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                <div>
-                        <h3 className="text-xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                          Intermediate Education
-                        </h3>
-                        <p className="text-lg font-semibold mt-1">Sri Chaitanya College of Education</p>
-                        <p className="text-muted-foreground">Mathematics, Physics, Chemistry (MPC)</p>
-                </div>
-                      <div className="flex items-center">
-                        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/10">
-                          2019 - 2021
-                        </span>
-              </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-muted-foreground">
-                        • Achieved academic excellence with a strong foundation in mathematics and sciences
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Participated in various mathematics and science olympiads
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Active member of the science club and participated in science exhibitions
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Received merit scholarship for outstanding academic performance
-                      </p>
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {['Mathematics', 'Physics', 'Chemistry', 'Problem Solving', 'Analytical Skills'].map((subject) => (
-                        <span key={subject} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
-                          {subject}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* School */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative group"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
-                      <span className="text-3xl">📚</span>
-                    </div>
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                <div>
-                        <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                          Secondary Education
-                        </h3>
-                        <p className="text-lg font-semibold mt-1">Sai Vineeth Public School</p>
-                        <p className="text-muted-foreground">SSC (10th Standard)</p>
-                </div>
-                      <div className="flex items-center">
-                        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/10">
-                          2018 - 2019
-                        </span>
-              </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-muted-foreground">
-                        • Graduated with distinction and received academic excellence award
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Class representative and active participant in school activities
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Won first prize in school-level science exhibition
-                      </p>
-                      <p className="text-muted-foreground">
-                        • Member of the school's quiz team and debate club
-                      </p>
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {['Sciences', 'Mathematics', 'English', 'Social Studies', 'Leadership'].map((subject) => (
-                        <span key={subject} className="px-2 py-1 rounded-lg text-xs bg-white/5 text-muted-foreground">
-                          {subject}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="section py-16 sm:py-24 relative overflow-hidden">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Experience Journey</h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              My professional experience and projects that have shaped my career path
-            </p>
-          </motion.div>
-
-            <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-8 max-w-4xl mx-auto"
-          >
-            {/* UI/UX & Graphic Designer Trainee */}
-                  <motion.div
+              transition={{ duration: 0.5 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">Experience Journey</h2>
+              <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+                My professional experience and projects that have shaped my career path
+              </p>
+            </motion.div>
+
+              <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              className="space-y-8 max-w-4xl mx-auto"
+            >
+              {/* UI/UX & Graphic Designer Trainee */}
+                    <motion.div
               whileHover={{ scale: 1.02 }}
               className="relative group"
             >
@@ -1017,7 +1072,7 @@ export default function Home() {
             </motion.div>
 
             {/* AI & Cybersecurity Intern */}
-                  <motion.div
+                    <motion.div
               whileHover={{ scale: 1.02 }}
               className="relative group"
             >
@@ -1446,8 +1501,8 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Get in Touch</h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-white">Get in Touch</h2>
+            <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto">
               Let's discuss how we can work together to create something amazing
             </p>
           </motion.div>
@@ -1457,201 +1512,192 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8"
+            className="max-w-4xl mx-auto"
           >
-            {/* Contact Form */}
+            {/* Contact Form Card */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="glass-effect rounded-2xl p-8 w-full"
+              whileHover={{ scale: 1.01 }}
+              className="relative bg-gradient-to-br from-background/50 via-background/30 to-background/50 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/10 shadow-2xl"
             >
-              <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">Name</label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    onHoverStart={() => setCursorVariant("hover")}
-                    onHoverEnd={() => setCursorVariant("default")}
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-red-500/5 border border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-pink-500/50 outline-none transition-all"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    onHoverStart={() => setCursorVariant("hover")}
-                    onHoverEnd={() => setCursorVariant("default")}
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-red-500/5 border border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-pink-500/50 outline-none transition-all"
-                    placeholder="your@email.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">Message</label>
-                  <motion.textarea
-                    whileFocus={{ scale: 1.02 }}
-                    onHoverStart={() => setCursorVariant("hover")}
-                    onHoverEnd={() => setCursorVariant("default")}
-                    id="message"
-                    name="message"
-                    required
-                    rows={4}
-                    className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-red-500/5 border border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-pink-500/50 outline-none transition-all resize-none"
-                    placeholder="Your message..."
-                  />
-                </div>
-                <motion.button
-                  type="submit"
-                  disabled={formStatus === 'sending'}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:opacity-90 text-white rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
-                  whileHover={{ scale: formStatus === 'sending' ? 1 : 1.02 }}
-                  whileTap={{ scale: formStatus === 'sending' ? 1 : 0.98 }}
-                >
-                  {formStatus === 'sending' ? (
-                    <>
-                      <motion.div
-                        className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl" />
+              
+              {/* Form Content */}
+              <div className="relative z-10">
+                <h3 className="text-3xl sm:text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  Send a Message
+                </h3>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Name Input */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="space-y-2"
+                    >
+                      <label htmlFor="name" className="text-sm font-medium text-white/70">Name</label>
+                      <motion.input
+                        whileFocus={{ scale: 1.02 }}
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        className="w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-secondary/5 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-lg placeholder:text-white/30"
+                        placeholder="Your name"
                       />
-                      Sending...
-                    </>
-                  ) : formStatus === 'sent' ? (
-                    <>
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="text-lg"
-                      >
-                        ✓
-                      </motion.span>
-                      Message Sent!
-                    </>
-                  ) : formStatus === 'error' ? (
-                    <>
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="text-lg"
-                      >
-                        ⚠️
-                      </motion.span>
-                      Error Sending
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <motion.span
-                        initial={{ x: 0 }}
-                        animate={{ x: 5 }}
-                        transition={{ duration: 0.2, repeat: Infinity, repeatType: "reverse" }}
-                        className="inline-block"
-                      >
-                        →
-                      </motion.span>
-                    </>
-                  )}
-                </motion.button>
-              </form>
-            </motion.div>
+                    </motion.div>
 
-            {/* Contact Information & Social Links */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="space-y-6 w-full"
-            >
-              {/* Contact Info Card */}
-              <motion.div
-                whileHover={{
-                  scale: 1.02,
-                  rotateY: 5,
-                  boxShadow: "0 20px 30px rgba(0,0,0,0.2)"
-                }}
-                onHoverStart={() => setCursorVariant("hover")}
-                onHoverEnd={() => setCursorVariant("default")}
-                className="glass-effect rounded-2xl p-8 transform-gpu"
-                style={{ perspective: "1000px" }}
-              >
-                <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
-                <div className="space-y-4">
+                    {/* Email Input */}
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="space-y-2"
+                    >
+                      <label htmlFor="email" className="text-sm font-medium text-white/70">Email</label>
+                      <motion.input
+                        whileFocus={{ scale: 1.02 }}
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-secondary/5 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-lg placeholder:text-white/30"
+                        placeholder="your@email.com"
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Message Input */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <label htmlFor="message" className="text-sm font-medium text-white/70">Message</label>
+                    <motion.textarea
+                      whileFocus={{ scale: 1.01 }}
+                      id="message"
+                      name="message"
+                      required
+                      rows={6}
+                      className="w-full px-6 py-4 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-secondary/5 border border-white/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-lg resize-none placeholder:text-white/30"
+                      placeholder="Your message..."
+                    />
+                  </motion.div>
+
+                  {/* Submit Button */}
+                  <motion.button
+                    type="submit"
+                    disabled={formStatus === 'sending'}
+                    className="w-full px-8 py-4 text-lg font-medium bg-gradient-to-r from-primary/10 to-secondary/10 hover:from-primary/20 hover:to-secondary/20 text-primary border border-primary/20 rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={{ scale: formStatus === 'sending' ? 1 : 1.02 }}
+                    whileTap={{ scale: formStatus === 'sending' ? 1 : 0.98 }}
+                  >
+                    {formStatus === 'sending' ? (
+                      <>
+                        <motion.div
+                          className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        Sending...
+                      </>
+                    ) : formStatus === 'sent' ? (
+                      <>
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="text-xl"
+                        >
+                          ✓
+                        </motion.span>
+                        Message Sent!
+                      </>
+                    ) : formStatus === 'error' ? (
+                      <>
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="text-xl"
+                        >
+                          ⚠️
+                        </motion.span>
+                        Error Sending
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <motion.span
+                          initial={{ x: 0 }}
+                          animate={{ x: 5 }}
+                          transition={{
+                            duration: 0.6,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            ease: "easeInOut"
+                          }}
+                          className="inline-block"
+                        >
+                          →
+                        </motion.span>
+                      </>
+                    )}
+                  </motion.button>
+                </form>
+
+                {/* Contact Info */}
+                <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {[
-                    { icon: "📱", label: "Phone", text: "+91 8309241420", href: "tel:8309241420" },
-                    { icon: "📧", label: "Email", text: "lokanadhammanikanta123@gmail.com", href: "mailto:lokanadhammanikanta123@gmail.com" },
+                    { icon: "📱", label: "Phone", value: "+91 8309241420", href: "tel:+918309241420" },
+                    { icon: "📧", label: "Email", value: "lokanadhammanikanta123@gmail.com", href: "mailto:lokanadhammanikanta123@gmail.com" },
                   ].map((item, index) => (
                     <motion.a
                       key={item.label}
                       href={item.href}
-                      whileHover={{ scale: 1.02 }}
                       initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.1 * index }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-background/50 hover:bg-background/80 transition-colors group"
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 + (index * 0.1) }}
+                      className="group flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-primary/5 via-background to-secondary/5 border border-white/10 hover:border-primary/30 transition-all duration-300"
                     >
-                      <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <span className="text-2xl">{item.icon}</span>
+                      </div>
                       <div>
-                        <div className="text-sm text-muted-foreground">{item.label}</div>
-                        <div className="font-medium group-hover:text-primary transition-colors">{item.text}</div>
+                        <p className="text-sm text-white/50">{item.label}</p>
+                        <p className="text-base font-medium text-white group-hover:text-primary transition-colors">{item.value}</p>
                       </div>
                     </motion.a>
                   ))}
                 </div>
-              </motion.div>
 
-              {/* Social Links Card */}
-              <motion.div
-                whileHover={{
-                  scale: 1.02,
-                  rotateY: 5,
-                  boxShadow: "0 20px 30px rgba(0,0,0,0.2)"
-                }}
-                onHoverStart={() => setCursorVariant("hover")}
-                onHoverEnd={() => setCursorVariant("default")}
-                className="glass-effect rounded-2xl p-8 transform-gpu"
-                style={{ perspective: "1000px" }}
-              >
-                <h3 className="text-2xl font-semibold mb-6">Connect With Me</h3>
-                <div className="space-y-4">
+                {/* Social Links */}
+                <div className="mt-8 flex items-center justify-center sm:justify-start gap-4">
                   {[
-                    { icon: "💼", label: "LinkedIn", text: "Manikanta-Lokanadhamm", href: "https://www.linkedin.com/in/manikanta-lokanadhamm/", external: true },
-                    { icon: "🎨", label: "Behance", text: "Manikanta-Lokanadham", href: "https://www.behance.net/Manikanta-Lokanadham", external: true },
-                    { icon: "📝", label: "Blog", text: "mkedito.wordpress.com", href: "https://mkedito.wordpress.com/", external: true },
-                  ].map((item, index) => (
+                    { icon: "💼", href: "https://www.linkedin.com/in/Manikanta-Lokanadhamm/", label: "LinkedIn" },
+                    { icon: "🎨", href: "https://www.behance.net/Manikanta-Lokanadham", label: "Behance" },
+                    { icon: "📝", href: "https://mkedito.wordpress.com/", label: "Blog" },
+                  ].map((social, index) => (
                     <motion.a
-                      key={item.label}
-                      href={item.href}
-                      target={item.external ? "_blank" : undefined}
-                      rel={item.external ? "noopener noreferrer" : undefined}
-                      whileHover={{ scale: 1.02 }}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: 0.1 * index }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-background/50 hover:bg-background/80 transition-colors group"
+                      key={social.href}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.6 + (index * 0.1) }}
+                      whileHover={{ scale: 1.1 }}
+                      className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center hover:from-primary/20 hover:to-secondary/20 transition-all duration-300 group relative"
                     >
-                      <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                      <div>
-                        <div className="text-sm text-muted-foreground">{item.label}</div>
-                        <div className="font-medium group-hover:text-primary transition-colors">{item.text}</div>
-                      </div>
+                      <span className="text-2xl group-hover:scale-110 transition-transform">{social.icon}</span>
+                      <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-white/50 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        {social.label}
+                      </span>
                     </motion.a>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
