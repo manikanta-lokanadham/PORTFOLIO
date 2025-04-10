@@ -1,0 +1,631 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 213 31% 91%;
+    --card: 222 47% 11%;
+    --card-foreground: 213 31% 91%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 215 20.2% 65.1%;
+    --primary: 263 83.3% 57.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --accent: 263 83.3% 57.8%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 263 83.3% 57.8%;
+    --radius: 1rem;
+    --primary-rgb: 6, 182, 212; /* RGB values for cyan-500 */
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 213 31% 91%;
+    --card: 222 47% 11%;
+    --card-foreground: 213 31% 91%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 215 20.2% 65.1%;
+    --primary: 263 83.3% 57.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --accent: 263 83.3% 57.8%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 263 83.3% 57.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at top right, hsl(266, 100%, 64%, 0.1), transparent 40%),
+      radial-gradient(circle at bottom left, hsl(280, 100%, 64%, 0.1), transparent 40%),
+      linear-gradient(to bottom right, hsl(230, 25%, 5%), hsl(230, 25%, 3%));
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .dark body::before {
+    background: 
+      radial-gradient(circle at top right, hsl(266, 100%, 64%, 0.15), transparent 40%),
+      radial-gradient(circle at bottom left, hsl(280, 100%, 64%, 0.15), transparent 40%),
+      linear-gradient(to bottom right, hsl(230, 25%, 5%), hsl(230, 25%, 3%));
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500;
+  }
+
+  .bg-gradient {
+    @apply bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-red-500/10;
+  }
+
+  .glass-effect {
+    @apply bg-background/80 backdrop-blur-xl border border-white/10 shadow-lg;
+  }
+
+  .hover-effect {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+  }
+
+  .rainbow-border {
+    @apply relative before:absolute before:inset-0 before:rounded-[inherit] before:p-[1px] before:bg-gradient-to-r before:from-purple-500 before:via-pink-500 before:to-red-500 before:animate-[border_3s_linear_infinite];
+  }
+
+  .rainbow-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 animate-gradient;
+  }
+
+  .animate-gradient {
+    @apply bg-[length:200%_200%] animate-[gradient_8s_ease_infinite];
+  }
+
+  .animate-grid {
+    @apply bg-[length:50px_50px] animate-[grid_20s_linear_infinite];
+  }
+
+  .animate-noise {
+    @apply bg-[length:100px_100px] animate-[noise_0.5s_steps(10)_infinite];
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-bounce-slow {
+    animation: bounce 3s infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes grid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 50px 50px;
+  }
+}
+
+@keyframes noise {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-purple-500/20 via-pink-500/20 to-red-500/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gradient-to-b from-purple-500/30 via-pink-500/30 to-red-500/30;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Modern focus styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-purple-500 ring-offset-2 ring-offset-background;
+}
+
+/* Modern selection styles */
+::selection {
+  @apply bg-purple-500/20 text-purple-500;
+}
+
+/* Glass Effect */
+.glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg;
+}
+
+.glass-card {
+  @apply glass rounded-xl p-6 transition-all duration-300 hover:bg-white/10;
+}
+
+/* Button Styles */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+.btn-primary {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg;
+}
+
+.btn-secondary {
+  @apply btn bg-secondary text-secondary-foreground hover:bg-secondary/80 focus:ring-secondary/50;
+}
+
+.btn-outline {
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-full border border-purple-500/20 bg-background/80 backdrop-blur-sm font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-background;
+}
+
+.btn-ghost {
+  @apply btn hover:bg-white/5 text-foreground backdrop-blur-sm;
+}
+
+/* Section Styles */
+.section {
+  @apply py-16 md:py-24 relative overflow-hidden;
+}
+
+.section-title {
+  @apply text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+
+.section-subtitle {
+  @apply text-lg text-muted-foreground max-w-2xl mb-12 leading-relaxed;
+}
+
+/* Card Styles */
+.card {
+  @apply relative;
+}
+
+.card-content {
+  @apply relative bg-background/50 backdrop-blur-sm rounded-2xl p-8 border border-white/10 transition-all duration-300;
+}
+
+.card-glow {
+  @apply absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 transition-opacity duration-500;
+}
+
+.group:hover .card-glow {
+  @apply opacity-100;
+}
+
+.group:hover .card-content {
+  @apply border-primary/20 shadow-lg shadow-primary/5;
+}
+
+.card-icon {
+  @apply w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center transition-colors duration-300;
+}
+
+.group:hover .card-icon {
+  @apply bg-primary/20;
+}
+
+.card-title {
+  @apply text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+
+.card-subtitle {
+  @apply text-lg font-semibold mt-1;
+}
+
+.card-period {
+  @apply px-4 py-1.5 rounded-full text-sm font-medium bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border border-primary/10;
+}
+
+.card-description {
+  @apply space-y-3 text-muted-foreground;
+}
+
+.card-skills {
+  @apply mt-4 flex flex-wrap gap-2;
+}
+
+.skill-tag {
+  @apply px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 text-muted-foreground transition-colors duration-300;
+}
+
+.group:hover .skill-tag {
+  @apply bg-primary/10 text-primary;
+}
+
+/* Experience Card */
+.experience-card {
+  @apply card rainbow-border;
+}
+
+.experience-card .company {
+  @apply text-xl font-semibold rainbow-text;
+}
+
+.experience-card .role {
+  @apply text-lg font-medium text-foreground;
+}
+
+.experience-card .duration {
+  @apply text-sm text-muted-foreground;
+}
+
+.experience-card .description {
+  @apply text-sm text-muted-foreground leading-relaxed;
+}
+
+/* Skill Card */
+.skill-card {
+  @apply card flex items-center gap-4 p-4;
+}
+
+.skill-card .icon {
+  @apply w-10 h-10 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center;
+}
+
+.skill-card .name {
+  @apply text-sm font-medium;
+}
+
+/* Contact Info */
+.contact-info {
+  @apply flex flex-col gap-4;
+}
+
+.contact-item {
+  @apply flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors;
+}
+
+.contact-item .icon {
+  @apply w-5 h-5 text-purple-500;
+}
+
+/* Education Card */
+.education-card {
+  @apply card rainbow-border;
+}
+
+.education-card .school {
+  @apply text-lg font-semibold rainbow-text;
+}
+
+.education-card .degree {
+  @apply text-sm text-muted-foreground mt-1;
+}
+
+.education-card .duration {
+  @apply text-xs text-muted-foreground mt-2;
+}
+
+/* Grid Styles */
+.grid-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Decorative Elements */
+.glow {
+  @apply relative;
+}
+
+.glow::after {
+  content: '';
+  @apply absolute inset-0 rounded-[inherit] blur-xl opacity-40 bg-purple-500/20 -z-10;
+}
+
+/* Skills Grid */
+.skills-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4;
+}
+
+/* Timeline */
+.timeline {
+  @apply relative pl-8 border-l border-purple-500/20;
+}
+
+.timeline-item {
+  @apply relative mb-8 last:mb-0;
+}
+
+.timeline-item::before {
+  content: '';
+  @apply absolute -left-[33px] w-4 h-4 rounded-full bg-purple-500;
+}
+
+/* Badge */
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-primary {
+  @apply bg-purple-500/10 text-purple-500;
+}
+
+.badge-secondary {
+  @apply bg-pink-500/10 text-pink-500;
+}
+
+/* Social Links */
+.social-links {
+  @apply flex gap-4;
+}
+
+.social-link {
+  @apply w-10 h-10 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors;
+}
+
+/* Project Card */
+.project-card {
+  @apply card overflow-hidden;
+}
+
+.project-card .image {
+  @apply aspect-video rounded-lg overflow-hidden mb-4;
+}
+
+.project-card .image img {
+  @apply w-full h-full object-cover transition-transform duration-500;
+}
+
+.group:hover .project-card .image img {
+  @apply scale-105;
+}
+
+.project-card .title {
+  @apply text-lg font-semibold mb-2;
+}
+
+.project-card .description {
+  @apply text-sm text-muted-foreground;
+}
+
+/* Stats */
+.stats-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-6;
+}
+
+.stat-card {
+  @apply card text-center rainbow-border;
+}
+
+.stat-card .value {
+  @apply text-3xl font-bold rainbow-text mb-1;
+}
+
+.stat-card .label {
+  @apply text-sm text-muted-foreground;
+}
+
+/* New Utility Classes */
+.backdrop-blur {
+  @apply backdrop-blur-xl;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Grid Background */
+.grid-background {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Grid Layouts */
+.grid-layout {
+  @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+/* Responsive Typography */
+.text-responsive {
+  @apply text-base sm:text-lg md:text-xl;
+}
+
+/* Animation Classes */
+.fade-in {
+  @apply transition-opacity duration-500;
+}
+
+.slide-up {
+  @apply animate-[slideUp_0.5s_ease-out];
+}
+
+.scale-in {
+  @apply animate-[scaleIn_0.5s_ease-out];
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Skill Bar Animation */
+@keyframes skillBar {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--skill-level);
+  }
+}
+
+.skill-bar {
+  @apply h-2 bg-secondary rounded-full overflow-hidden;
+}
+
+.skill-bar-fill {
+  @apply h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full;
+  animation: skillBar 1s ease-out forwards;
+}
+
+/* Modern Card Hover Effects */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:bg-background/90;
+}
+
+/* Animated Border */
+.animated-border {
+  @apply relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-r before:from-primary/50 before:via-primary/30 before:to-primary/50 before:animate-[border_3s_linear_infinite];
+}
+
+@keyframes border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Animation Classes */
+.scale-hover {
+  @apply transition-transform duration-300 hover:scale-[1.02];
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+}
+
+/* Glass Effect */
+.glass-effect {
+  @apply bg-background/50 backdrop-blur-sm border border-white/10;
+} 
