@@ -48,7 +48,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased selection:bg-purple-500/20 selection:text-purple-500`}>
+      <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased selection:bg-purple-500/20 selection:text-purple-500 overflow-x-hidden`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -60,22 +60,22 @@ export default function RootLayout({
             {/* Gradient Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-red-500/5" />
             
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e5_1px,transparent_1px),linear-gradient(to_bottom,#4f46e5_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+            {/* Grid Pattern - Hidden on mobile for better performance */}
+            <div className="absolute inset-0 hidden md:block bg-[linear-gradient(to_right,#4f46e5_1px,transparent_1px),linear-gradient(to_bottom,#4f46e5_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
             
             {/* Noise Texture */}
             <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02]" />
             
-            {/* Animated Gradient Orbs */}
-            <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
-            <div className="absolute top-0 -right-4 w-72 h-72 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-red-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+            {/* Animated Gradient Orbs - Adjusted for mobile */}
+            <div className="absolute top-0 -left-4 w-48 md:w-72 h-48 md:h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+            <div className="absolute top-0 -right-4 w-48 md:w-72 h-48 md:h-72 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+            <div className="absolute -bottom-8 left-20 w-48 md:w-72 h-48 md:h-72 bg-red-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
           </div>
 
           {/* Main Content */}
           <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow w-full max-w-[100vw] overflow-x-hidden">
               {children}
             </main>
             <SplashScreen />
